@@ -1,4 +1,4 @@
-package com.example.cafe5_mobile_client;
+package com.example.cafe5_discount_gen_mobile;
 
 import io.flutter.embedding.android.FlutterActivity;
 

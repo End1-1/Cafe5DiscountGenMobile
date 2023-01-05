@@ -3,12 +3,10 @@ import 'dart:typed_data';
 import 'package:cafe5_discount_gen_mobile/base_widget.dart';
 import 'package:cafe5_discount_gen_mobile/class_outlinedbutton.dart';
 import 'package:cafe5_discount_gen_mobile/config.dart';
-import 'package:cafe5_discount_gen_mobile/db.dart';
-import 'package:cafe5_discount_gen_mobile/network_table.dart';
 import 'package:cafe5_discount_gen_mobile/socket_message.dart';
 import 'package:cafe5_discount_gen_mobile/translator.dart';
+import 'package:cafe5_discount_gen_mobile/widget_main_page.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 
 class WidgetHome extends StatefulWidget {
   WidgetHome({super.key}) {
@@ -74,156 +72,12 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
       }
       switch (op) {
         case SocketMessage.op_login:
-        case SocketMessage.op_login_pin:
           Config.setString(key_session_id, m.getString());
           Config.setString(key_fullname, m.getString());
-          if (Config.getBool(key_data_dont_update)) {
-            _startWithoutDataLoad();
-            return;
-          }
-          m = SocketMessage.dllplugin(SocketMessage.op_get_hall_list);
-          sendSocketMessage(m);
-          setState(() {
-            _progressString = tr("Loading list of halls");
-          });
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => WidgetMainPage()), (route) => false);
           break;
         case SocketMessage.op_login_pashhash:
-          if (Config.getBool(key_data_dont_update)) {
-            _startWithoutDataLoad();
-            return;
-          }
-          m = SocketMessage.dllplugin(SocketMessage.op_get_hall_list);
-          sendSocketMessage(m);
-          setState(() {
-            _progressString = tr("Loading list of halls");
-          });
-          break;
-        case SocketMessage.op_get_hall_list:
-          NetworkTable nt = NetworkTable();
-          nt.readFromSocketMessage(m);
-          Db.delete("delete from halls");
-          for (int i = 0; i < nt.rowCount; i++) {
-            Db.insert("insert into halls (id, name, menuid, servicevalue) values (?,?,?,?)", [nt.getRawData(i, 0), nt.getRawData(i, 1), nt.getRawData(i, 2), nt.getRawData(i, 3)]);
-          }
-          setState(() {
-            _progressString = tr("Loading list of tables");
-          });
-          m = SocketMessage.dllplugin(SocketMessage.op_get_table_list);
-          sendSocketMessage(m);
-          break;
-        case SocketMessage.op_get_table_list:
-          NetworkTable nt = NetworkTable();
-          nt.readFromSocketMessage(m);
-          await Db.db!.transaction((txn) async {
-            Batch b = txn.batch();
-            b.delete("tables");
-            for (int i = 0; i < nt.rowCount; i++) {
-              b.insert("tables", {'id': nt.getRawData(i, 0), 'hall': nt.getRawData(i, 1), 'state': nt.getRawData(i, 2), 'name': nt.getRawData(i, 3), 'orderid': nt.getRawData(i, 4), 'q': i});
-            }
-            await b.commit();
-          });
-
-          setState(() {
-            _progressString = tr("Loading list of dish part 1");
-          });
-          m = SocketMessage.dllplugin(SocketMessage.op_get_dish_part1_list);
-          sendSocketMessage(m);
-          break;
-        case SocketMessage.op_get_dish_part1_list:
-          NetworkTable nt = NetworkTable();
-          nt.readFromSocketMessage(m);
-          Db.delete("delete from dish_part1");
-          for (int i = 0; i < nt.rowCount; i++) {
-            Db.insert("insert into dish_part1 (id, name) values (?,?)", [nt.getRawData(i, 0), nt.getRawData(i, 1)]);
-          }
-          m = SocketMessage.dllplugin(SocketMessage.op_get_dish_part2_list);
-          sendSocketMessage(m);
-          setState(() {
-            _progressString = tr("Loading list of dish part 2");
-          });
-          break;
-        case SocketMessage.op_get_dish_part2_list:
-          NetworkTable nt = NetworkTable();
-          nt.readFromSocketMessage(m);
-          await Db.db!.transaction((txn) async {
-            Batch b = txn.batch();
-            b.delete("dish_part2");
-            for (int i = 0; i < nt.rowCount; i++) {
-              b.insert("dish_part2", {'id': nt.getRawData(i, 0), 'parentid': nt.getRawData(i, 1), 'part1': nt.getRawData(i, 2), 'textcolor': nt.getRawData(i, 3), 'bgcolor': nt.getRawData(i, 4), 'name': nt.getRawData(i, 5), 'q': nt.getRawData(i, 6)});
-            }
-            await b.commit();
-          });
-
-          setState(() {
-            _progressString = tr("Loading dishes");
-          });
-          m = SocketMessage.dllplugin(SocketMessage.op_get_dish_dish_list);
-          sendSocketMessage(m);
-          break;
-        case SocketMessage.op_get_dish_dish_list:
-          NetworkTable nt = NetworkTable();
-          nt.readFromSocketMessage(m);
-          await Db.db!.transaction((txn) async {
-            Batch b = txn.batch();
-            b.delete("dish");
-            for (int i = 0; i < nt.rowCount; i++) {
-              b.insert("dish", {'id': nt.getRawData(i, 0), 'part2': nt.getRawData(i, 1), 'bgcolor': nt.getRawData(i, 2), 'textcolor': nt.getRawData(i, 3), 'name': nt.getRawData(i, 4), 'q': nt.getRawData(i, 5), 'quicklist': nt.getRawData(i, 6)});
-            }
-            b.commit();
-          });
-          setState(() {
-            _progressString = tr("Loading menu");
-          });
-          m = SocketMessage.dllplugin(SocketMessage.op_dish_menu);
-          sendSocketMessage(m);
-          break;
-        case SocketMessage.op_dish_menu:
-          NetworkTable nt = NetworkTable();
-          nt.readFromSocketMessage(m);
-          await Db.db!.transaction((txn) async {
-            Batch b = txn.batch();
-            b.delete("dish_menu");
-            for (int i = 0; i < nt.rowCount; i++) {
-              b.insert("dish_menu", {'id': i + 1, 'menuid': nt.getRawData(i, 0), 'typeid': nt.getRawData(i, 1), 'dishid': nt.getRawData(i, 2), 'price': nt.getRawData(i, 3), 'storeid': nt.getRawData(i, 4), 'print1': nt.getRawData(i, 5), 'print2': nt.getRawData(i, 6)});
-            }
-            await b.commit();
-          });
-          setState(() {
-            _progressString = tr("Loading dish comments");
-          });
-          m = SocketMessage.dllplugin(SocketMessage.op_get_dish_comments);
-          sendSocketMessage(m);
-          break;
-        case SocketMessage.op_get_dish_comments:
-          NetworkTable nt = NetworkTable();
-          nt.readFromSocketMessage(m);
-          await Db.db!.transaction((txn) async {
-            Batch b = txn.batch();
-            b.delete("dish_comment");
-            for (int i = 0; i < nt.rowCount; i++) {
-              b.insert("dish_comment", {'id': nt.getRawData(i, 0), 'forid': nt.getRawData(i, 1), 'name': nt.getRawData(i, 2)});
-            }
-            await b.commit();
-          });
-          setState(() {
-            _progressString = tr("Loading car models");
-          });
-          m = SocketMessage.dllplugin(SocketMessage.op_car_model);
-          sendSocketMessage(m);
-          break;
-        case SocketMessage.op_car_model:
-          NetworkTable nt = NetworkTable();
-          nt.readFromSocketMessage(m);
-          await Db.db!.transaction((txn) async {
-            Batch b = txn.batch();
-            b.delete("car_model");
-            for (int i = 0; i < nt.rowCount; i++) {
-              b.insert("car_model", {'id': nt.getRawData(i, 0), 'name': nt.getRawData(i, 1)});
-            }
-            await b.commit();
-          });
-          Config.setBool(key_data_dont_update, true);
-          _startWithoutDataLoad();
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => WidgetMainPage()), (route) => false);
           break;
       }
     }
@@ -450,7 +304,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
       _dataLoading = true;
       _progressString = "";
     });
-    SocketMessage m = SocketMessage.dllplugin(SocketMessage.op_login_pin);
+    SocketMessage m = SocketMessage.dllplugin(SocketMessage.op_login);
     m.addString(_pinController.text);
     m.addString(Config.getString(key_firebase_token));
     sendSocketMessage(m);
@@ -458,11 +312,5 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
 
   void _pin(String t) {
     _pinController.text += t;
-  }
-
-  void _startWithoutDataLoad() async {
-    print(DateTime.now());
-    print(DateTime.now());
-    //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => WidgetHalls()), (route) => false);
   }
 }

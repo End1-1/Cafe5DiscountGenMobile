@@ -26,7 +26,12 @@ const Map<String, String> vals = {
   'cancel': 'Հրաժարվել',
   'quantity of ' : 'Քանակ',
   'comment for' : 'Մեկնաբանություն',
-  'print bill': 'Տպել հաշիվը'
+  'print bill': 'Տպել հաշիվը',
+  'generate': 'Ստեղցել նոր զեղչի քարտ',
+  'create new discount card?': 'Ստեղծել՞ նոր զեղչի քարտ',
+  'send link': 'Ուղարկել',
+  'bonuses': 'Բոնուսներ',
+  'Empty QR code':'Դատարկ կոդ'
 };
 
 String tr(String s) {

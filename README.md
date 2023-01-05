@@ -1,4 +1,4 @@
-# cafe5_mobile_client
+# cafe5_discount_gen_mobile
 
 Cafe5MobileClient
 
