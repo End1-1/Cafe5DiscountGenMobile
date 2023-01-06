@@ -157,7 +157,7 @@ class WidgetMainPageState extends BaseWidgetState with TickerProviderStateMixin 
                 right: 0,
                 width: MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 3),
                 child: Container(
-                    color: Colors.lime,
+                    color: const Color(0xffcccccc),
                     child: Column(
                       children: [
                         Container(

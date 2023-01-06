@@ -10,6 +10,7 @@ class ClassOutlinedButton {
         child: OutlinedButton(
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.all(2),
+              backgroundColor: Colors.white,
             ),
             onPressed: () {
               f();

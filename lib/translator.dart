@@ -31,7 +31,7 @@ const Map<String, String> vals = {
   'create new discount card?': 'Ստեղծել՞ նոր զեղչի քարտ',
   'send link': 'Ուղարկել',
   'bonuses': 'Բոնուսներ',
-  'Empty QR code':'Դատարկ կոդ'
+  'empty qr code':'Դատարկ կոդ'
 };
 
 String tr(String s) {

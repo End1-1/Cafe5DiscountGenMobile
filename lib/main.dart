@@ -17,6 +17,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Config.init();
+  Config.setString(key_server_address, "37.252.76.8");
+  Config.setString(key_server_port, "10002");
+  Config.setString(key_server_username, "end1_1@mail.ru");
+  Config.setString(key_server_password, "parole");
+  Config.setString(key_database_name, "cafe5");
+  Config.setInt(key_protocol_version, 1);
   Firebase.initializeApp().then((value) {
       FirebaseMessaging.instance.getToken().then((value) {
         String token = value!;
@@ -53,7 +59,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: WidgetChooseSettings(),
+      home: const WidgetChooseSettings(),
     );
   }
 }
