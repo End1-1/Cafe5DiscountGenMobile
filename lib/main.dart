@@ -1,6 +1,5 @@
 import 'package:cafe5_discount_gen_mobile/client_socket.dart';
 import 'package:cafe5_discount_gen_mobile/config.dart';
-import 'package:cafe5_discount_gen_mobile/local_notification_service.dart';
 import 'package:cafe5_discount_gen_mobile/widget_choose_settings.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +14,6 @@ Future<void> main() async {
   Config.setInt(key_protocol_version, 1);
   ClientSocket.init(Config.getString(key_server_address), int.tryParse(Config.getString(key_server_port)) ?? 0);
   await ClientSocket.socket.connect(false);
-  await LocalNotificationService().setup();
 
   runApp(const MyApp());
 }

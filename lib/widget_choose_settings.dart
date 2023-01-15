@@ -1,6 +1,4 @@
 import 'dart:typed_data';
-import 'package:cafe5_discount_gen_mobile/widget_manual_settings.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:cafe5_discount_gen_mobile/translator.dart';
 import 'package:cafe5_discount_gen_mobile/config.dart';
