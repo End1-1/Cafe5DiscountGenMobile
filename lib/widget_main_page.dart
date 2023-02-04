@@ -104,7 +104,8 @@ class WidgetMainPageState extends BaseWidgetState with TickerProviderStateMixin 
                 sd(tr("Empty QR code"));
                 return;
               }
-              Share.share('CView 10% discount https://cview.am/$_qr', subject: 'CView 10% discount');
+              //Share.share('CView 10% discount https://cview.am/$_qr.png', subject: 'CView 10% discount');
+              Share.share('CView 10% discount https://cview.am/discountapp/hand/0b1f9e6b-6dcf-4d21-9a1f-adc9ac08c8f6.png', subject: 'CView 10% discount');
             }, tr("Send link"), w: double.infinity),
             const Divider(height: 20,)
           ]),
