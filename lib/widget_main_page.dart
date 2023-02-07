@@ -10,6 +10,8 @@ import 'package:cafe5_discount_gen_mobile/widget_bonuses.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class WidgetMainPage extends StatefulWidget {
   WidgetMainPage({super.key}) {}
@@ -20,7 +22,8 @@ class WidgetMainPage extends StatefulWidget {
   }
 }
 
-class WidgetMainPageState extends BaseWidgetState with TickerProviderStateMixin {
+class WidgetMainPageState extends BaseWidgetState
+    with TickerProviderStateMixin {
   bool _hideMenu = true;
   double startx = 0;
   int _menuAnimationDuration = 300;
@@ -48,7 +51,7 @@ class WidgetMainPageState extends BaseWidgetState with TickerProviderStateMixin 
       }
       switch (op) {
         case SocketMessage.op_create_qr_discount:
-          setState((){
+          setState(() {
             _qr = m.getString();
           });
           break;
@@ -60,55 +63,69 @@ class WidgetMainPageState extends BaseWidgetState with TickerProviderStateMixin 
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-            minimum: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 35),
+            minimum:
+                const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 35),
             child: Stack(children: [
               Container(color: Colors.white),
-      Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(children: [
-              Expanded(child: Container()),
-              Text(Config.getString(key_fullname), style: const TextStyle(fontWeight: FontWeight.bold)),
-              Expanded(child: Container()),
-              ClassOutlinedButton.createImage(() {
+              Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      Expanded(child: Container()),
+                      Text(Config.getString(key_fullname),
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      Expanded(child: Container()),
+                      ClassOutlinedButton.createImage(() {
                         setState(() {
                           _hideMenu = false;
                           startx = 0;
                           _menuAnimationDuration = 300;
                         });
                       }, "images/menu.png"),
-            ]),
-            const Divider(height: 20,),
-            ClassOutlinedButton.create((){
-              sq(tr("Create new discount card?"), (){
-                SocketMessage m = SocketMessage.dllplugin(SocketMessage.op_create_qr_discount);
-                sendSocketMessage(m);
-              }, (){});
-            }, tr("Generate"), w: double.infinity),
-            Expanded(child: Align(alignment: Alignment.center, child: Container(
-              width: 300,
-              height: 300,
-              color: Colors.white,
-              child: Visibility(visible: _qr.isNotEmpty, child: QrImage(
-                data: _qr,
-                version: QrVersions.auto,
-                size: 300.0,
-              ),
-            )))),
-            ClassOutlinedButton.create((){
-              if (_qr.isEmpty) {
-                sd(tr("Empty QR code"));
-                return;
-              }
-              Share.share('CView 10% discount https://cview.am/discountapp/hand/$_qr.png', subject: 'CView 10% discount');
-              //Share.share('CView 10% discount https://cview.am/discountapp/hand/0b1f9e6b-6dcf-4d21-9a1f-adc9ac08c8f6.png', subject: 'CView 10% discount');
-            }, tr("Send link"), w: double.infinity),
-            const Divider(height: 20,)
-          ]),
-      _menu()
-    ])));
+                    ]),
+                    const Divider(
+                      height: 20,
+                    ),
+                    ClassOutlinedButton.create(() {
+                      sq(tr("Create new discount card?"), () {
+                        SocketMessage m = SocketMessage.dllplugin(
+                            SocketMessage.op_create_qr_discount);
+                        sendSocketMessage(m);
+                      }, () {});
+                    }, tr("Generate"), w: double.infinity),
+                    Expanded(
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                                width: 300,
+                                height: 300,
+                                color: Colors.white,
+                                child: Visibility(
+                                  visible: _qr.isNotEmpty,
+                                  child: QrImage(
+                                    data: _qr,
+                                    version: QrVersions.auto,
+                                    size: 300.0,
+                                  ),
+                                )))),
+                    ClassOutlinedButton.create(() {
+                      if (_qr.isEmpty) {
+                        sd(tr("Empty QR code"));
+                        return;
+                      }
+                      Share.share(
+                          'CView 10% discount https://cview.am/discountapp/hand/$_qr.png',
+                          subject: 'CView 10% discount');
+                      //Share.share('CView 10% discount https://cview.am/discountapp/hand/0b1f9e6b-6dcf-4d21-9a1f-adc9ac08c8f6.png', subject: 'CView 10% discount');
+                    }, tr("Send link"), w: double.infinity),
+                    const Divider(
+                      height: 20,
+                    )
+                  ]),
+              _menu()
+            ])));
   }
 
   Widget _menu() {
@@ -154,7 +171,8 @@ class WidgetMainPageState extends BaseWidgetState with TickerProviderStateMixin 
                 top: 0,
                 bottom: 0,
                 right: 0,
-                width: MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 3),
+                width: MediaQuery.of(context).size.width -
+                    (MediaQuery.of(context).size.width / 3),
                 child: Container(
                     color: const Color(0xffcccccc),
                     child: Column(
@@ -172,20 +190,41 @@ class WidgetMainPageState extends BaseWidgetState with TickerProviderStateMixin 
                             }, "images/cancel.png")
                           ],
                         ),
-                        const Divider(height: 20,),
+                        const Divider(
+                          height: 20,
+                        ),
                         ClassOutlinedButton.create(() {
                           setState(() {
                             _hideMenu = true;
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => WidgetBonusPage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        WidgetBonusPage()));
                           });
                         }, tr("Bonuses"), w: double.infinity),
-                        const Divider(height: 20,),
+                        const Divider(
+                          height: 20,
+                        ),
+                        ClassOutlinedButton.create(_launchInsta, tr("Instagramm"), w: double.infinity),
+                        const Divider(
+                          height: 20,
+                        ),
+                        ClassOutlinedButton.create(_changeLanguage, tr("Language"), w: double.infinity),
+                        const Divider(
+                          height: 20,
+                        ),
                         ClassOutlinedButton.create(() {
                           setState(() {
                             sq(tr("Confirm to logout"), () {
                               Config.setString(key_session_id, "");
                               Config.setBool(key_data_dont_update, false);
-                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => WidgetHome()), (route) => false);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          WidgetHome()),
+                                  (route) => false);
                             }, () {});
                           });
                         }, tr("Logout"), w: double.infinity),
@@ -196,5 +235,65 @@ class WidgetMainPageState extends BaseWidgetState with TickerProviderStateMixin 
             ],
           )),
     );
+  }
+
+  void _launchInsta() async {
+    const nativeUrl = "instagram://c.view.yvn?igshid=YmMyMTA2M2Y=";
+    const webUrl = "https://instagram.com/c.view.yvn?igshid=YmMyMTA2M2Y=";
+    if (await canLaunchUrlString(nativeUrl)) {
+      await launchUrlString(nativeUrl);
+    } else if (await canLaunchUrlString(webUrl)) {
+      await launchUrlString(webUrl);
+    } else {
+      print("can't open Instagram");
+    }
+  }
+
+  void _changeLanguage() async {
+    List<Widget> tiles = List.from(<Widget>[]);
+    tiles.add(ListTile(
+      dense: true,
+      title: const Text('Հայերեն'),
+      onTap: ((){
+        Navigator.pop(context);
+        _hideMenu = true;
+        setState(() {
+          Config.setString(key_used_language, 'am');
+        });
+      }),
+    ));
+    tiles.add(ListTile(
+      dense: true,
+      title: const Text('Русский'),
+      onTap: ((){
+        Navigator.pop(context);
+        _hideMenu = true;
+        setState(() {
+          Config.setString(key_used_language, 'ru');
+        });
+      }),
+    ));
+    tiles.add(ListTile(
+      dense: true,
+      title: const Text('English'),
+      onTap: ((){
+        Navigator.pop(context);
+        _hideMenu = true;
+        setState(() {
+          Config.setString(key_used_language, 'en');
+        });
+      }),
+    ));
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+              child: SimpleDialog(
+            backgroundColor: Colors.white,
+              children: tiles
+          ));
+    });
   }
 }

@@ -34,6 +34,9 @@ String tr(String s) {
 
 class Translator {
   static String tr(String s) {
+    if (!vals.containsKey(Config.getLanguage())) {
+      return s;
+    }
     if (vals[Config.getLanguage()]!.containsKey(s.toLowerCase())) {
       return vals[Config.getLanguage()]![s.toLowerCase()]!;
     }

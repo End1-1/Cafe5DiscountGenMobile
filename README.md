@@ -1,6 +1,6 @@
 # cafe5_discount_gen_mobile
 
-Cafe5MobileClient
+CView Discount
 
 ## Getting Started
 

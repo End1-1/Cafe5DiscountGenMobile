@@ -66,7 +66,9 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
   @override
   void initState(){
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _getIpAddress();
+      if (ClientSocket.socket == null) {
+        _getIpAddress();
+      }
     });
     super.initState();
   }
