@@ -6,18 +6,20 @@ import 'package:cafe5_discount_gen_mobile/socket_message.dart';
 
 class ClientSocket {
 
-  static late ClientSocket socket;
+  static ClientSocket? socket;
   static int _socketState = 0;
   static SecureSocket? _socket;
   String remoteAddress;
   int remotePort;
   final BytesBuilder _tempBuffer = BytesBuilder();
-  static List<SocketInterface> _interfaces =[];
+  static final List<SocketInterface> _interfaces =[];
 
   ClientSocket ({required this.remoteAddress, required this.remotePort});
 
   static void init(String ip, int port) async {
-    socket = ClientSocket(remoteAddress: ip, remotePort: port);
+    if (socket == null) {
+      socket = ClientSocket(remoteAddress: ip, remotePort: port);
+    }
   }
 
   Future<void> connect(bool wait) async {
@@ -33,8 +35,8 @@ class ClientSocket {
     if (_socket != null) {
       _socket!.destroy();
     }
-    print("${DateTime.now()} Connect to ${socket.remoteAddress}:${socket.remotePort}");
-    await SecureSocket.connect(socket.remoteAddress, socket.remotePort, timeout: Duration(seconds: 3), onBadCertificate: (x){return true;}).then((s) {
+    print("${DateTime.now()} Connect to ${socket!.remoteAddress}:${socket!.remotePort}");
+    await SecureSocket.connect(socket!.remoteAddress, socket!.remotePort, timeout: const Duration(seconds: 3), onBadCertificate: (x){return true;}).then((s) {
       print("${DateTime.now()} Socket connected ${s.hashCode}");
       _socket = s;
       _listenSocket();
@@ -93,6 +95,9 @@ class ClientSocket {
   }
 
   Future<bool> _reconnectToServer() async {
+    if (_socket != null) {
+      _socket!.destroy();
+    }
     const int sec = 2;
     print("Wait $sec second");
     await Future.delayed(const Duration(seconds: sec));
@@ -101,12 +106,12 @@ class ClientSocket {
     return true;
   }
 
-  void addInterface(SocketInterface si) {
+  static void addInterface(SocketInterface si) {
     _interfaces.add(si);
     print("addInterface ${_interfaces.length}: ${_interfaces.join(",")}");
   }
 
-  void removeInterface(SocketInterface si) {
+  static void removeInterface(SocketInterface si) {
     print("remove Interface ${si.runtimeType}");
     _interfaces.remove(si);
     print("after removeInterface ${_interfaces.length}: ${_interfaces.join(",")}");

@@ -14,7 +14,7 @@ abstract class BaseWidgetState<T extends StatefulWidget> extends State<T> with W
 
   @override
   void initState() {
-    ClientSocket.socket.addInterface(this);
+    ClientSocket.addInterface(this);
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -22,7 +22,7 @@ abstract class BaseWidgetState<T extends StatefulWidget> extends State<T> with W
   @override
   void dispose() {
     print("Dispose ${this.runtimeType}");
-    ClientSocket.socket.removeInterface(this);
+    ClientSocket.removeInterface(this);
     super.dispose();
   }
 
@@ -67,7 +67,7 @@ abstract class BaseWidgetState<T extends StatefulWidget> extends State<T> with W
   @override
   void disconnected() {
     print("Disconnected from ${this.runtimeType}");
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => WidgetChooseSettings()), (route) => false);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const WidgetChooseSettings()), (route) => false);
   }
 
   @override

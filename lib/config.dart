@@ -12,17 +12,7 @@ const key_use_this_hall_id = "key_use_this_hall_id";
 const key_data_dont_update = "key_data_dont_update";
 const key_protocol_version = "key_protocol_vesion";
 const key_firebase_token = "key_firebase_token";
-
-List<String> dbCreate = [
-  "create table halls (id int primary key, menuid int, servicevalue real, name, text)",
-  "create table tables (id int primary key, hall int, state int, name text, orderid text, q int)",
-  "create table dish_part1 (id int primary key, name text)",
-  "create table dish_part2 (id int primary key, parentid int, part1 int, bgcolor int, textcolor int, name text, q int)",
-  "create table dish (id int, part2 int, bgcolor int, textcolor int, name text, q int, quicklist)",
-  "create table car_model (id int, name text)",
-  "create table dish_comment (id int, forid int, name text)",
-  "create table dish_menu (id int, menuid int, typeid int, dishid int, price real, storeid int, print1 text, print2 text)"
-];
+const key_used_language = "app_language";
 
 final RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
 String num(double x) {
@@ -73,5 +63,9 @@ class Config {
 
   static bool getBool(String key) {
     return _config._preferences.getBool(key) ?? false;
+  }
+
+  static String getLanguage() {
+    return _config._preferences.getString(key_used_language) ?? 'am';
   }
 }
