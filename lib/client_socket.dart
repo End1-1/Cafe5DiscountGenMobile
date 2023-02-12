@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:cafe5_discount_gen_mobile/client_socket_interface.dart';
-import 'package:cafe5_discount_gen_mobile/socket_message.dart';
+import 'package:cviewdiscount/client_socket_interface.dart';
+import 'package:cviewdiscount/socket_message.dart';
 
 class ClientSocket {
 

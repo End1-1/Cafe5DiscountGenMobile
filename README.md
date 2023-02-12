@@ -1,4 +1,4 @@
-# cafe5_discount_gen_mobile
+# cviewdiscount
 
 CView Discount
 

@@ -1,4 +1,4 @@
-package com.example.cafe5_discount_gen_mobile;
+package com.example.cviewdiscount;
 
 import io.flutter.embedding.android.FlutterActivity;
 

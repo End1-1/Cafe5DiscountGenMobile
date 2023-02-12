@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:cafe5_discount_gen_mobile/config.dart';
+import 'package:cviewdiscount/config.dart';
 
 class SocketMessage {
   static const int c_hello = 1;

@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:cafe5_discount_gen_mobile/translator.dart';
+import 'package:cviewdiscount/translator.dart';
 import 'package:flutter/cupertino.dart';
 import 'client_socket_interface.dart';
 import 'client_socket.dart';
 import 'package:flutter/material.dart';
-import 'package:cafe5_discount_gen_mobile/socket_message.dart';
-import 'package:cafe5_discount_gen_mobile/widget_choose_settings.dart';
+import 'package:cviewdiscount/socket_message.dart';
+import 'package:cviewdiscount/widget_choose_settings.dart';
 
 abstract class BaseWidgetState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver implements SocketInterface {
 
-  List<int> _messageNumbers = [];
+  final List<int> _messageNumbers = [];
 
   @override
   void initState() {
@@ -21,7 +21,7 @@ abstract class BaseWidgetState<T extends StatefulWidget> extends State<T> with W
 
   @override
   void dispose() {
-    print("Dispose ${this.runtimeType}");
+    print("Dispose ${runtimeType}");
     ClientSocket.removeInterface(this);
     super.dispose();
   }

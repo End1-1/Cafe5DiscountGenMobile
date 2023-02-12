@@ -1,5 +1,5 @@
-import 'package:cafe5_discount_gen_mobile/class_outlinedbutton.dart';
-import 'package:cafe5_discount_gen_mobile/translator.dart';
+import 'package:cviewdiscount/class_outlinedbutton.dart';
+import 'package:cviewdiscount/translator.dart';
 import 'package:flutter/material.dart';
 
 class ClassSetQtyDlg {

@@ -1,6 +1,6 @@
-import 'package:cafe5_discount_gen_mobile/client_socket.dart';
-import 'package:cafe5_discount_gen_mobile/config.dart';
-import 'package:cafe5_discount_gen_mobile/widget_choose_settings.dart';
+import 'package:cviewdiscount/client_socket.dart';
+import 'package:cviewdiscount/config.dart';
+import 'package:cviewdiscount/widget_choose_settings.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {

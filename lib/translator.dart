@@ -1,4 +1,4 @@
-import 'package:cafe5_discount_gen_mobile/config.dart';
+import 'package:cviewdiscount/config.dart';
 
 final Map<String, Map<String, String>> vals = {
   'am': {

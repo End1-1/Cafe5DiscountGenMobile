@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:cafe5_discount_gen_mobile/server_config.dart';
+import 'package:cviewdiscount/server_config.dart';
 import 'package:flutter/material.dart';
-import 'package:cafe5_discount_gen_mobile/config.dart';
-import 'package:cafe5_discount_gen_mobile/base_widget.dart';
-import 'package:cafe5_discount_gen_mobile/socket_message.dart';
-import 'package:cafe5_discount_gen_mobile/home_page.dart';
+import 'package:cviewdiscount/config.dart';
+import 'package:cviewdiscount/base_widget.dart';
+import 'package:cviewdiscount/socket_message.dart';
+import 'package:cviewdiscount/home_page.dart';
 import 'package:http/http.dart' as http;
 
 import 'client_socket.dart';
@@ -27,7 +27,14 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
     if (!checkSocketMessage(m)) {
       return;
     }
-    print("command ${m.command}");
+    if (m.command == SocketMessage.c_dllplugin) {
+      int op = m.getInt();
+      int dllok = m.getByte();
+      if (dllok == 0) {
+        sd(m.getString());
+        return;
+      }
+    }
     switch (m.command) {
       case SocketMessage.c_hello:
         m = SocketMessage(messageId: SocketMessage.messageNumber(), command: SocketMessage.c_auth);

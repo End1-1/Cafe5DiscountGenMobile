@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:cafe5_discount_gen_mobile/base_widget.dart';
-import 'package:cafe5_discount_gen_mobile/class_outlinedbutton.dart';
-import 'package:cafe5_discount_gen_mobile/config.dart';
-import 'package:cafe5_discount_gen_mobile/socket_message.dart';
-import 'package:cafe5_discount_gen_mobile/translator.dart';
+import 'package:cviewdiscount/base_widget.dart';
+import 'package:cviewdiscount/class_outlinedbutton.dart';
+import 'package:cviewdiscount/config.dart';
+import 'package:cviewdiscount/socket_message.dart';
+import 'package:cviewdiscount/translator.dart';
 import 'package:flutter/material.dart';
 
 class WidgetBonusPage extends StatefulWidget {

@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:cafe5_discount_gen_mobile/client_socket.dart';
+import 'package:cviewdiscount/client_socket.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cafe5_discount_gen_mobile/translator.dart';
-import 'package:cafe5_discount_gen_mobile/config.dart';
+import 'package:cviewdiscount/translator.dart';
+import 'package:cviewdiscount/config.dart';
 
 class WidgetManualSettings extends StatefulWidget {
   const WidgetManualSettings({super.key});

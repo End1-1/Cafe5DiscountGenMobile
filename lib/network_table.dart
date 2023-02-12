@@ -1,4 +1,4 @@
-import 'package:cafe5_discount_gen_mobile/socket_message.dart';
+import 'package:cviewdiscount/socket_message.dart';
 
 const datatype_int = 1;
 const datatype_double = 2;
