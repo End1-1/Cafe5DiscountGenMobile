@@ -24,9 +24,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
   bool _showPin = false;
   String _progressString = "";
   late AnimationController animationController;
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _pinController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -100,93 +98,13 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
                     tr("Sign in"),
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ))),
-          Visibility(
-              visible: false,
-              child: Column(children: [
-                Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        width: 252,
-                        decoration: BoxDecoration(border: Border.all(color: Colors.black38)),
-                        child: Row(children: [
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            child: Image.asset(
-                              "images/user.png",
-                              width: 40,
-                              height: 40,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 50,
-                            width: 200,
-                            child: TextFormField(
-                              controller: _usernameController,
-                              style: const TextStyle(fontSize: 20),
-                              decoration: InputDecoration(
-                                hintText: tr("Username"),
-                                hintStyle: const TextStyle(color: Colors.black12),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          )
-                        ]))),
-                Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        width: 252,
-                        decoration: BoxDecoration(border: Border.all(color: Colors.black38)),
-                        child: Row(children: [
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            child: Image.asset(
-                              "images/lock.png",
-                              width: 40,
-                              height: 40,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 50,
-                            width: 200,
-                            child: TextFormField(
-                              obscureText: true,
-                              controller: _passwordController,
-                              style: const TextStyle(fontSize: 20),
-                              decoration: InputDecoration(
-                                hintText: tr("********"),
-                                hintStyle: const TextStyle(color: Colors.black12),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          )
-                        ]))),
-                Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        width: 252,
-                        height: 50,
-                        child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-                              backgroundColor: Colors.blueGrey,
-                              side: const BorderSide(
-                                width: 1.0,
-                                color: Colors.black38,
-                                style: BorderStyle.solid,
-                              ),
-                            ),
-                            onPressed: _login,
-                            child: Text(tr("Login"), style: const TextStyle(color: Colors.white))))),
-              ])),
+
           Align(
               child: SizedBox(
                   width: 72 * 3,
                   child: TextFormField(
                     obscureText: !_showPin,
-                    controller: _pinController,
+                    controller: _phoneController,
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                     decoration: InputDecoration(
@@ -196,78 +114,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
                       });
                     }, _showPin ? "images/hidden.png" : "images/view.png")),
                   ))),
-          Align(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      margin: const EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClassOutlinedButton.create(() {
-                            _pin("7");
-                          }, "7", h: 72, w: 72),
-                          ClassOutlinedButton.create(() {
-                            _pin("8");
-                          }, "8", h: 72, w: 72),
-                          ClassOutlinedButton.create(() {
-                            _pin("9");
-                          }, "9", h: 72, w: 72),
-                        ],
-                      )),
-                  Container(
-                      margin: const EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClassOutlinedButton.create(() {
-                            _pin("4");
-                          }, "4", h: 72, w: 72),
-                          ClassOutlinedButton.create(() {
-                            _pin("5");
-                          }, "5", h: 72, w: 72),
-                          ClassOutlinedButton.create(() {
-                            _pin("6");
-                          }, "6", h: 72, w: 72),
-                        ],
-                      )),
-                  Container(
-                      margin: const EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClassOutlinedButton.create(() {
-                            _pin("1");
-                          }, "1", h: 72, w: 72),
-                          ClassOutlinedButton.create(() {
-                            _pin("2");
-                          }, "2", h: 72, w: 72),
-                          ClassOutlinedButton.create(() {
-                            _pin("3");
-                          }, "3", h: 72, w: 72),
-                        ],
-                      )),
-                  Container(
-                      margin: const EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClassOutlinedButton.createImage(() {
-                            _loginPin();
-                          }, "images/user.png", h: 72, w: 72),
-                          ClassOutlinedButton.create(() {
-                            _pin("0");
-                          }, "0", h: 72, w: 72),
-                          ClassOutlinedButton.createImage(() {
-                            _pinController.clear();
-                          }, "images/cancel.png", h: 72, w: 72),
-                        ],
-                      ))
-                ],
-              )),
+
           Align(
               child: Container(
                   margin: const EdgeInsets.only(top: 5),
@@ -280,37 +127,5 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
             child: Container(margin: const EdgeInsets.only(top: 5), child: Visibility(visible: _progressString.isNotEmpty, child: Text(_progressString))),
           )
         ])));
-  }
-
-  void _login() {
-    if (_dataLoading) {
-      return;
-    }
-    setState(() {
-      _dataLoading = true;
-      _progressString = "";
-    });
-    SocketMessage m = SocketMessage.dllplugin(SocketMessage.op_login);
-    m.addString(_usernameController.text);
-    m.addString(_passwordController.text);
-    sendSocketMessage(m);
-  }
-
-  void _loginPin() {
-    if (_dataLoading) {
-      return;
-    }
-    setState(() {
-      _dataLoading = true;
-      _progressString = "";
-    });
-    SocketMessage m = SocketMessage.dllplugin(SocketMessage.op_login);
-    m.addString(_pinController.text);
-    m.addString(Config.getString(key_firebase_token));
-    sendSocketMessage(m);
-  }
-
-  void _pin(String t) {
-    _pinController.text += t;
   }
 }
