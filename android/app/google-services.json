@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "99359749947",
-    "project_id": "c5waitermobileclient",
-    "storage_bucket": "c5waitermobileclient.appspot.com"
+    "project_number": "187973232151",
+    "project_id": "cviewdiscount",
+    "storage_bucket": "cviewdiscount.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:99359749947:android:c6f75f78ae3e67f0ca691e",
+        "mobilesdk_app_id": "1:187973232151:android:a45897a66fbde2a7199e52",
         "android_client_info": {
-          "package_name": "com.breezedevs.cafe5_waiter_mobile_client"
+          "package_name": "com.example.cviewdiscount"
         }
       },
       "oauth_client": [
         {
-          "client_id": "99359749947-vl6nf7o5bjq1ncslttkfnh09ue6vtlo7.apps.googleusercontent.com",
+          "client_id": "187973232151-mfjtt22brvh7i736sofcg0rb4sfft73h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC-NJYM2ZjV_OOp-uSfSTOrxMjpWLqOekg"
+          "current_key": "AIzaSyDJ8uUDlTPoSoUftLH9lAY4gR5pnfS3GoM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "99359749947-vl6nf7o5bjq1ncslttkfnh09ue6vtlo7.apps.googleusercontent.com",
+              "client_id": "187973232151-mfjtt22brvh7i736sofcg0rb4sfft73h.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

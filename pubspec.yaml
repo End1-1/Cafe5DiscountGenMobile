@@ -23,6 +23,10 @@ dependencies:
   share_plus: ^6.3.0
   http: ^0.13.5
   json_annotation: ^4.8.0
+  firebase_auth: ^4.2.6
+  firebase_core: ^2.5.0
+  firebase_messaging: ^14.2.2
+  firebase_remote_config: ^3.0.12
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +35,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
   json_serializable: ^6.6.1
+  flutter_native_splash: ^2.2.16
+  flutter_svg: ^2.0.1
 
 flutter_icons:
     android: "launcher_icon"
@@ -39,12 +45,12 @@ flutter_icons:
     image_path: "assets/logo.png"
 
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
   assets:
     - images/
+
+flutter_native_splash:
+  color: "#151B2B"
+  image: "assets/splash.png"
 

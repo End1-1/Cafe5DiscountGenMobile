@@ -8,7 +8,7 @@ import 'package:cviewdiscount/translator.dart';
 import 'package:flutter/material.dart';
 
 class WidgetBonusPage extends StatefulWidget {
-  WidgetBonusPage({super.key}) {}
+  const WidgetBonusPage({super.key});
 
   @override
   State<StatefulWidget> createState() {

@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:cviewdiscount/server_config.dart';
+import 'package:cviewdiscount/translator.dart';
 import 'package:flutter/material.dart';
 import 'package:cviewdiscount/config.dart';
 import 'package:cviewdiscount/base_widget.dart';
 import 'package:cviewdiscount/socket_message.dart';
 import 'package:cviewdiscount/home_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_svg/flutter_svg.dart';
 
+import 'Utils/ColorHelper.dart';
 import 'client_socket.dart';
 
 class WidgetChooseSettings extends StatefulWidget {
@@ -83,6 +86,7 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorHelper.fromHex(Config.getString(key_background_color)),
         body: Flex(
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -90,7 +94,7 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
             children: [
               Align(
                   alignment: Alignment.center,
-                  child: Image(image: AssetImage(ClientSocket.imageConnectionState()),)
+                  child: SvgPicture.asset("assets/noconnection.svg", semanticsLabel: tr("No connection"))
               ),
             ]
         )
@@ -100,8 +104,6 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
   void _getIpAddress() async {
     http.get(Uri.parse('https://cview.am/discountapp/ip.html')).then((response) async {
       if (response.statusCode == 200) {
-        ServerConfig sc = ServerConfig.fromJson(jsonDecode(response.body));
-        ClientSocket.init(sc.ip, int.tryParse(sc.port) ?? 0);
         ClientSocket.socket!.connect(false);
       } else {
         const int sec = 2;

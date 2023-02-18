@@ -13,12 +13,12 @@ const key_data_dont_update = "key_data_dont_update";
 const key_protocol_version = "key_protocol_vesion";
 const key_firebase_token = "key_firebase_token";
 const key_used_language = "app_language";
+const key_background_color = "key_background_color";
 
 final RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
 String num(double x) {
   return x.toString().replaceAll(regex, "");
 }
-
 
 class Config {
 
@@ -63,6 +63,16 @@ class Config {
 
   static bool getBool(String key) {
     return _config._preferences.getBool(key) ?? false;
+  }
+
+  static void setConfig(Map<String, dynamic> c) {
+    c.forEach((key, value) {
+      if (value is int) {
+        _config._preferences.setInt(key, value);
+      } else if (value is String) {
+        _config._preferences.setString(key, value);
+      }
+    });
   }
 
   static String getLanguage() {

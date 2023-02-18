@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cviewdiscount/translator.dart';
-import 'package:flutter/cupertino.dart';
 import 'client_socket_interface.dart';
 import 'client_socket.dart';
 import 'package:flutter/material.dart';
