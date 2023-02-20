@@ -76,6 +76,7 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
           MaterialPageRoute(builder: (BuildContext context) => WidgetHome()),
               (route) => false);
     } else {
+      auth.currentUser!.reload();
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (BuildContext context) => const WidgetMainPage()),

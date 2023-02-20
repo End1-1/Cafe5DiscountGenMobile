@@ -8,6 +8,7 @@ import 'package:cviewdiscount/socket_message.dart';
 import 'package:cviewdiscount/translator.dart';
 import 'package:cviewdiscount/utils/ColorHelper.dart';
 import 'package:cviewdiscount/widget_bonuses.dart';
+import 'package:cviewdiscount/widgets/costum_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,9 @@ class WidgetMainPage extends StatefulWidget {
 class WidgetMainPageState extends BaseWidgetState
     with TickerProviderStateMixin {
   bool _hideMenu = true;
+  bool _languageMenu = false;
   double startx = 0;
+  double startHeight = 0;
   int _menuAnimationDuration = 300;
   String _qr = "";
 
@@ -64,13 +67,14 @@ class WidgetMainPageState extends BaseWidgetState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorHelper.background_color,
+        backgroundColor: ColorHelper.background_color,
         body: SafeArea(
             minimum:
                 const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 35),
-            child: Stack(
-                children: [
-              Container(color: ColorHelper.background_color,),
+            child: Stack(children: [
+              Container(
+                color: ColorHelper.background_color,
+              ),
               Column(
                   //mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -79,33 +83,46 @@ class WidgetMainPageState extends BaseWidgetState
                     Row(children: [
                       Expanded(child: Container()),
                       Text(Config.getString(key_fullname),
-                          style: TextStyle(fontWeight: FontWeight.bold, color: ColorHelper.text_color)),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: ColorHelper.text_color)),
                       Expanded(child: Container()),
-                      ClassOutlinedButton.createImage(() {
-                        setState(() {
-                          _hideMenu = false;
-                          startx = 0;
-                          _menuAnimationDuration = 300;
-                        });
-                      }, "assets/images/menu.png"),
+                      Visibility(
+                          visible: _hideMenu,
+                          child: ClassOutlinedButton.createImage(() {
+                            setState(() {
+                              _hideMenu = false;
+                              startx = 0;
+                              _menuAnimationDuration = 300;
+                            });
+                          }, "assets/images/menu.png")),
                     ]),
                     const Divider(
                       height: 20,
                     ),
-                    Align(alignment: Alignment.center, child: Container(width: 100, height: 100, child: InkWell(onTap: () {
-                      sq(tr("Create new discount card?"), () {
-                        SocketMessage m = SocketMessage.dllplugin(
-                            SocketMessage.op_create_qr_discount);
-                        sendSocketMessage(m);
-                      }, () {});
-                    }, child: Image.asset("assets/images/plus.png")))),
-                    ClassOutlinedButton.create(() {
-                      sq(tr("Create new discount card?"), () {
-                        SocketMessage m = SocketMessage.dllplugin(
-                            SocketMessage.op_create_qr_discount);
-                        sendSocketMessage(m);
-                      }, () {});
-                    }, tr("Generate"), w: double.infinity),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                            width: 100,
+                            height: 100,
+                            child: InkWell(
+                                onTap: () {
+                                  sq(tr("Create new discount card?"), () {
+                                    SocketMessage m = SocketMessage.dllplugin(
+                                        SocketMessage.op_create_qr_discount);
+                                    sendSocketMessage(m);
+                                  }, () {});
+                                },
+                                child: Image.asset("assets/images/plus.png")))),
+                    Align(
+                        child: Text(tr("Generate"),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorHelper.title_text_color,
+                                fontSize: 20))),
+                    const Divider(
+                      height: 20,
+                    ),
                     Expanded(
                         child: Align(
                             alignment: Alignment.center,
@@ -121,19 +138,21 @@ class WidgetMainPageState extends BaseWidgetState
                                     size: 300.0,
                                   ),
                                 )))),
-                    ClassOutlinedButton.create(() {
-                      if (_qr.isEmpty) {
-                        sd(tr("Empty QR code"));
-                        return;
-                      }
-                      Share.share(
-                          'CView 10% discount https://cview.am/discountapp/hand/$_qr.png',
-                          subject: 'CView 10% discount');
-                      //Share.share('CView 10% discount https://cview.am/discountapp/hand/0b1f9e6b-6dcf-4d21-9a1f-adc9ac08c8f6.png', subject: 'CView 10% discount');
-                    }, tr("Send link"), w: double.infinity),
                     const Divider(
                       height: 20,
-                    )
+                    ),
+                    Align(
+                        child: CostumButton(
+                      width: MediaQuery.of(context).size.width -
+                          (MediaQuery.of(context).size.width / 4),
+                      onPressed: _createQR,
+                      child: Text(tr("Send link"),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w100,
+                              fontSize: 24)),
+                    )),
+                    Expanded(child: Container()),
                   ]),
               _menu()
             ])));
@@ -150,6 +169,7 @@ class WidgetMainPageState extends BaseWidgetState
           onTap: () {
             setState(() {
               _hideMenu = true;
+              _languageMenu = false;
               _menuAnimationDuration = 300;
             });
           },
@@ -185,7 +205,11 @@ class WidgetMainPageState extends BaseWidgetState
                 width: MediaQuery.of(context).size.width -
                     (MediaQuery.of(context).size.width / 3),
                 child: Container(
-                    color: const Color(0xffcccccc),
+                    decoration: BoxDecoration(
+                        color: ColorHelper.background_menu,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20))),
+                    margin: const EdgeInsets.only(top: 30),
                     child: Column(
                       children: [
                         Container(
@@ -198,51 +222,213 @@ class WidgetMainPageState extends BaseWidgetState
                               setState(() {
                                 _hideMenu = true;
                               });
-                            }, "assets/images/cancel.png")
+                            }, "assets/images/menu_90.png")
                           ],
                         ),
                         const Divider(
                           height: 20,
                         ),
-                        ClassOutlinedButton.create(() {
-                          setState(() {
-                            _hideMenu = true;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        const WidgetBonusPage()));
-                          });
-                        }, tr("Bonuses"), w: double.infinity),
+                        SizedBox(
+                            height: 30,
+                            child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _hideMenu = true;
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                const WidgetBonusPage()));
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    const VerticalDivider(width: 30),
+                                    Image.asset("assets/images/coin.png"),
+                                    const VerticalDivider(width: 20),
+                                    Text(tr("Bonuses").toLowerCase(),
+                                        style: TextStyle(
+                                            color: ColorHelper.title_text_color,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18))
+                                  ],
+                                ))),
                         const Divider(
                           height: 20,
                         ),
-                        ClassOutlinedButton.create(_launchInsta, tr("Instagramm"), w: double.infinity),
+                        SizedBox(
+                            height: 30,
+                            child: GestureDetector(
+                                onTap: _launchInsta,
+                                child: Row(
+                                  children: [
+                                    const VerticalDivider(width: 30),
+                                    Image.asset("assets/images/instagram.png"),
+                                    const VerticalDivider(width: 20),
+                                    Text(tr("Instagram").toLowerCase(),
+                                        style: TextStyle(
+                                            color: ColorHelper.title_text_color,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18))
+                                  ],
+                                ))),
                         const Divider(
                           height: 20,
                         ),
-                        ClassOutlinedButton.create(_changeLanguage, tr("Language"), w: double.infinity),
+                        SizedBox(
+                            height: 30,
+                            child: GestureDetector(
+                                onTap: _launchInsta,
+                                child: Row(
+                                  children: [
+                                    const VerticalDivider(width: 30),
+                                    Image.asset("assets/images/meta.png"),
+                                    const VerticalDivider(width: 20),
+                                    Text(tr("Facebook").toLowerCase(),
+                                        style: TextStyle(
+                                            color: ColorHelper.title_text_color,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18))
+                                  ],
+                                ))),
                         const Divider(
                           height: 20,
                         ),
-                        ClassOutlinedButton.create(() {
-                          setState(() {
-                            sq(tr("Confirm to logout"), () {
-                              final FirebaseAuth auth = FirebaseAuth.instance;
-                              if (auth.currentUser != null) {
-                                auth.signOut();
-                              }
-                              Config.setString(key_session_id, "");
-                              Config.setBool(key_data_dont_update, false);
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          WidgetHome()),
-                                  (route) => false);
-                            }, () {});
-                          });
-                        }, tr("Logout"), w: double.infinity),
+                        SizedBox(
+                            height: 30,
+                            child: GestureDetector(
+                                onTap: _launchInsta,
+                                child: Row(
+                                  children: [
+                                    const VerticalDivider(width: 30),
+                                    Image.asset("assets/images/globus.png"),
+                                    const VerticalDivider(width: 20),
+                                    Text(tr("Armenian").toLowerCase(),
+                                        style: TextStyle(
+                                            color: ColorHelper.title_text_color,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18)),
+                                    const VerticalDivider(
+                                      width: 30,
+                                    ),
+                                    SizedBox(
+                                        height: 30,
+                                        width: 30,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _languageMenu = !_languageMenu;
+                                              });
+                                            },
+                                            child: Image.asset(
+                                                "assets/images/expandmenu.png")))
+                                  ],
+                                ))),
+                        AnimatedContainer(
+                            margin: const EdgeInsets.only(left: 60),
+                            height: _languageMenu ? 150 : 0,
+                            duration: const Duration(milliseconds: 300),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Divider(
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                      height: 30,
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _languageMenu = false;
+                                              Config.setString(
+                                                  key_used_language, 'am');
+                                            });
+                                          },
+                                          child: Text(
+                                            tr("Armenian").toLowerCase(),
+                                            style: TextStyle(
+                                                color: ColorHelper.text_color),
+                                          ))),
+                                  const Divider(
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                      height: 30,
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _languageMenu = false;
+                                              Config.setString(
+                                                  key_used_language, 'ru');
+                                            });
+                                          },
+                                          child: Text(
+                                            tr("Russian").toLowerCase(),
+                                            style: TextStyle(
+                                                color: ColorHelper.text_color),
+                                          ))),
+                                  const Divider(
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                      height: 30,
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _languageMenu = false;
+                                              Config.setString(
+                                                  key_used_language, 'en');
+                                            });
+                                          },
+                                          child: Text(
+                                            tr("English").toLowerCase(),
+                                            style: TextStyle(
+                                                color: ColorHelper.text_color),
+                                          )))
+                                ],
+                              ),
+                            )),
+                        const Divider(
+                          height: 20,
+                        ),
+                        SizedBox(
+                            height: 30,
+                            child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    sq(tr("Confirm to logout"), () {
+                                      final FirebaseAuth auth =
+                                          FirebaseAuth.instance;
+                                      if (auth.currentUser != null) {
+                                        auth.signOut();
+                                      }
+                                      Config.setString(key_session_id, "");
+                                      Config.setBool(
+                                          key_data_dont_update, false);
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  WidgetHome()),
+                                          (route) => false);
+                                    }, () {});
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    const VerticalDivider(width: 30),
+                                    Image.asset("assets/images/exit.png"),
+                                    const VerticalDivider(width: 20),
+                                    Text(tr("Logout").toLowerCase(),
+                                        style: TextStyle(
+                                            color: ColorHelper.title_text_color,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18)),
+                                  ],
+                                ))),
                         Expanded(child: Container())
                       ],
                     )),
@@ -269,7 +455,7 @@ class WidgetMainPageState extends BaseWidgetState
     tiles.add(ListTile(
       dense: true,
       title: const Text('Հայերեն'),
-      onTap: ((){
+      onTap: (() {
         Navigator.pop(context);
         _hideMenu = true;
         setState(() {
@@ -280,7 +466,7 @@ class WidgetMainPageState extends BaseWidgetState
     tiles.add(ListTile(
       dense: true,
       title: const Text('Русский'),
-      onTap: ((){
+      onTap: (() {
         Navigator.pop(context);
         _hideMenu = true;
         setState(() {
@@ -291,7 +477,7 @@ class WidgetMainPageState extends BaseWidgetState
     tiles.add(ListTile(
       dense: true,
       title: const Text('English'),
-      onTap: ((){
+      onTap: (() {
         Navigator.pop(context);
         _hideMenu = true;
         setState(() {
@@ -304,11 +490,19 @@ class WidgetMainPageState extends BaseWidgetState
         context: context,
         builder: (BuildContext context) {
           return WillPopScope(
-            onWillPop: () async => false,
-              child: SimpleDialog(
-            backgroundColor: Colors.white,
-              children: tiles
-          ));
-    });
+              onWillPop: () async => false,
+              child:
+                  SimpleDialog(backgroundColor: Colors.white, children: tiles));
+        });
+  }
+
+  void _createQR() async {
+    if (_qr.isEmpty) {
+      sd(tr("Empty QR code"));
+      return;
+    }
+    Share.share('CView 10% discount https://cview.am/discountapp/hand/$_qr.png',
+        subject: 'CView 10% discount');
+    //Share.share('CView 10% discount https://cview.am/discountapp/hand/0b1f9e6b-6dcf-4d21-9a1f-adc9ac08c8f6.png', subject: 'CView 10% discount');
   }
 }

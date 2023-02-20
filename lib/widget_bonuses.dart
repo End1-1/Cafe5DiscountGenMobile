@@ -7,6 +7,8 @@ import 'package:cviewdiscount/socket_message.dart';
 import 'package:cviewdiscount/translator.dart';
 import 'package:flutter/material.dart';
 
+import 'Utils/ColorHelper.dart';
+
 class WidgetBonusPage extends StatefulWidget {
   const WidgetBonusPage({super.key});
 
@@ -56,10 +58,11 @@ class WidgetBonusPageState extends BaseWidgetState with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorHelper.background_color,
         body: SafeArea(
             minimum: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 35),
             child: Stack(children: [
-              Container(color: Colors.white),
+              Container(color: ColorHelper.background_color),
               Column(
                   //mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -68,7 +71,7 @@ class WidgetBonusPageState extends BaseWidgetState with TickerProviderStateMixin
                     Row(children: [
                       ClassOutlinedButton.createImage(() {
                         Navigator.pop(context);
-                      }, "images/back.png"),
+                      }, "assets/images/back.png"),
                       Expanded(child: Container()),
                       Text(Config.getString(key_fullname), style: const TextStyle(fontWeight: FontWeight.bold)),
                       Expanded(child: Container()),
@@ -78,8 +81,8 @@ class WidgetBonusPageState extends BaseWidgetState with TickerProviderStateMixin
                         child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              "${tr("Bonuses")}: $_bonus",
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              "${tr("Bonuses")}: \n$_bonus", textAlign: TextAlign.center,
+                              style: TextStyle(color: ColorHelper.button_background_gradient1, fontSize: 30, fontWeight: FontWeight.bold),
                             ))),
                   ])
             ])));

@@ -4,6 +4,9 @@ final Map<String, Map<String, String>> vals = {
   'am': {
     'yes': 'Այո',
     'no': 'Ոչ',
+    'armenian': 'Հայերեն',
+    'english': 'English',
+    'russian': 'Русский',
     'sign in': 'Մուտք',
     'login': 'Մուտք',
     'update date': 'Թարմացնել տվյալները',
@@ -18,7 +21,7 @@ final Map<String, Map<String, String>> vals = {
     'empty qr code': 'Դատարկ կոդ',
     'next': 'Առաջ',
     'confirm': 'Հաստատել',
-    'phone number': 'Հեռախոսի մարարը',
+    'phone number': 'Հեռախոսի հարարը',
     'code from sms': 'SMS-ով ուղարկած կոդը',
     'no connection to server.\ncheck internet connection.': 'Հնարավոր չէ կապ հաստատել սերվերի հետ։\nՍտուգեք ինտերնետի առկայությունը։',
     'phone number cannot be empty': 'Հեռախոսի համարը նշված չէ',

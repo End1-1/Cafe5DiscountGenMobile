@@ -5,6 +5,7 @@ class ColorHelper extends Color {
   const ColorHelper(super.value);
 
   static get background_color => fromHex("#151B2B");
+  static get background_menu => fromHex("#263F83");
   static get button_background_gradient1 => fromHex("#3E7EF1");
   static get button_background_gradient2 => fromHex("#295199");
 

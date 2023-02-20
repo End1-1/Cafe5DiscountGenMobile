@@ -170,6 +170,15 @@ class WidgetSMSState extends BaseWidgetState<WidgetSMS>
                   textAlign: TextAlign.center,
                 ),
               ),
+
+                   Align(
+                alignment: Alignment.center,
+                child: Text(
+                  tr("If no SMS received, please, entered check phone number"),
+                  style: TextStyle(color: ColorHelper.text_color),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               Align(
                   child: Container(
                       margin: const EdgeInsets.only(top: 5),
