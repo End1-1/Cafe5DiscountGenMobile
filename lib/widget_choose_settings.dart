@@ -1,7 +1,8 @@
-import 'dart:convert';
 import 'dart:typed_data';
-import 'package:cviewdiscount/server_config.dart';
 import 'package:cviewdiscount/translator.dart';
+import 'package:cviewdiscount/widget_main_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cviewdiscount/config.dart';
 import 'package:cviewdiscount/base_widget.dart';
@@ -15,6 +16,7 @@ import 'client_socket.dart';
 
 class WidgetChooseSettings extends StatefulWidget {
   const WidgetChooseSettings({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return WidgetChooseSettingsState();
@@ -22,7 +24,6 @@ class WidgetChooseSettings extends StatefulWidget {
 }
 
 class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
-
   @override
   void handler(Uint8List data) {
     SocketMessage m = SocketMessage(messageId: 0, command: 0);
@@ -40,7 +41,9 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
     }
     switch (m.command) {
       case SocketMessage.c_hello:
-        m = SocketMessage(messageId: SocketMessage.messageNumber(), command: SocketMessage.c_auth);
+        m = SocketMessage(
+            messageId: SocketMessage.messageNumber(),
+            command: SocketMessage.c_auth);
         m.addString(Config.getString(key_server_username));
         m.addString(Config.getString(key_server_password));
         sendSocketMessage(m);
@@ -55,30 +58,40 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
   }
 
   @override
-  void connected(){
+  void connected() {
     print("WidgetChooseSettings.connected()");
     SocketMessage.resetPacketCounter();
-    SocketMessage m = SocketMessage(messageId: SocketMessage.messageNumber(), command: SocketMessage.c_hello);
+    SocketMessage m = SocketMessage(
+        messageId: SocketMessage.messageNumber(),
+        command: SocketMessage.c_hello);
     sendSocketMessage(m);
   }
 
   @override
   void authenticate() {
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => WidgetHome()), (route) => false);
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser == null) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => WidgetHome()),
+              (route) => false);
+    } else {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => const WidgetMainPage()),
+              (route) => false);
+    }
     //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => WidgetHome()));
   }
 
   @override
   void disconnected() {
-    setState((){});
+    setState(() {});
   }
 
   @override
-  void initState(){
+  void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (ClientSocket.socket == null) {
-        _getIpAddress();
-      }
     });
     super.initState();
   }
@@ -86,7 +99,7 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorHelper.fromHex(Config.getString(key_background_color)),
+        backgroundColor: ColorHelper.background_color,
         body: Flex(
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -94,23 +107,15 @@ class WidgetChooseSettingsState extends BaseWidgetState<WidgetChooseSettings> {
             children: [
               Align(
                   alignment: Alignment.center,
-                  child: SvgPicture.asset("assets/noconnection.svg", semanticsLabel: tr("No connection"))
-              ),
-            ]
-        )
-    );
-  }
-
-  void _getIpAddress() async {
-    http.get(Uri.parse('https://cview.am/discountapp/ip.html')).then((response) async {
-      if (response.statusCode == 200) {
-        ClientSocket.socket!.connect(false);
-      } else {
-        const int sec = 2;
-        print("Wait $sec second");
-        _getIpAddress();
-        print("retry http request");
-      }
-    });
+                  child: SvgPicture.asset("assets/images/noconnection.svg")),
+              Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                      tr(
+                          "No connection to server.\nCheck internet connection."),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: ColorHelper.text_color)))
+            ]));
   }
 }

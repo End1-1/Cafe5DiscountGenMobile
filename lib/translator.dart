@@ -17,7 +17,13 @@ final Map<String, Map<String, String>> vals = {
     'bonuses': 'Բոնուսներ',
     'empty qr code': 'Դատարկ կոդ',
     'next': 'Առաջ',
-    'confirm': 'Հաստատել'
+    'confirm': 'Հաստատել',
+    'phone number': 'Հեռախոսի մարարը',
+    'code from sms': 'SMS-ով ուղարկած կոդը',
+    'no connection to server.\ncheck internet connection.': 'Հնարավոր չէ կապ հաստատել սերվերի հետ։\nՍտուգեք ինտերնետի առկայությունը։',
+    'phone number cannot be empty': 'Հեռախոսի համարը նշված չէ',
+    'if no SMS received, please, entered check phone number': 'Եթե SMS չի եկել, ստուգեք մուտքագրված հեռախոսահամարը',
+    'wrong credential entered': 'Մուտքագրված տվյալները սխալ են'
   }
 };
 

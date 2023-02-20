@@ -12,7 +12,7 @@ import 'client_socket.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
+  await Config.init();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
 }
@@ -57,9 +57,9 @@ class MyAppState extends State<MyApp> {
     String jsonConfigStr = remoteConfig.getString("server_config");
     Map<String, dynamic>? config = jsonDecode(jsonConfigStr);
     if (config != null) {
-      print(jsonConfigStr);
-      await Config.init();
+      Config.setConfig(config);
       ClientSocket.init(config![key_server_address], int.tryParse(config![key_server_port]) ?? 0);
+      ClientSocket.socket!.connect(false);
     }
     jsonConfigStr = remoteConfig.getString("app_config");
     config = jsonDecode(jsonConfigStr);

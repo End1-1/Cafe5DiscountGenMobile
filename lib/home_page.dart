@@ -1,16 +1,18 @@
 import 'dart:typed_data';
 
 import 'package:cviewdiscount/base_widget.dart';
-import 'package:cviewdiscount/class_outlinedbutton.dart';
 import 'package:cviewdiscount/config.dart';
 import 'package:cviewdiscount/screens/sms/sms.dart';
 import 'package:cviewdiscount/socket_message.dart';
 import 'package:cviewdiscount/translator.dart';
 import 'package:cviewdiscount/widget_main_page.dart';
+import 'package:cviewdiscount/widgets/CViewToast.dart';
+import 'package:cviewdiscount/widgets/costum_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'Utils/ColorHelper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cviewdiscount/widgets/costum_button.dart';
+import 'package:cviewdiscount/utils/ColorHelper.dart';
 
 class WidgetHome extends StatefulWidget {
   WidgetHome({super.key}) {
@@ -96,59 +98,50 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor:
-            ColorHelper.fromHex(Config.getString(key_background_color)),
+        backgroundColor: ColorHelper.background_color,
         body: SafeArea(
             child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+              const Divider(
+                height: 40,
+              ),
               Align(
                   alignment: Alignment.center,
                   child: Container(
                       margin: const EdgeInsets.only(top: 20, bottom: 20),
                       child: Text(
                         tr("Phone number"),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: TextStyle(
+                            color: ColorHelper.title_text_color,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
                       ))),
+              const Divider(
+                height: 40,
+              ),
               Align(
                   alignment: Alignment.center,
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 10),
-                        child: const Text('+374',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24)),
-                      ),
-                      Expanded(
-                          child: Container(
-                              margin:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24),
-                                  controller: _phoneController,
-                                  textAlign: TextAlign.center,
-                                  decoration: const InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1,
-                                              color: Colors.greenAccent))))))
-                    ],
-                  )),
+                  child: CostumNumberTextField(
+                      prefixString: '+374', controller: _phoneController, enabled: !_dataLoading,)),
+              const Divider(
+                height: 40,
+              ),
               Align(
-                  child: TextButton(
-                      onPressed: _authByPhone,
-                      child: Text(
-                        tr("Next"),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24),
-                      ))),
+                  child: CostumButton(
+                width: MediaQuery.of(context).size.width -
+                    (MediaQuery.of(context).size.width / 4),
+                onPressed: _authByPhone,
+                child: Text(
+                  tr("Next"),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w100,
+                      fontSize: 24),
+                ),
+              )),
               Align(
                   child: Container(
                       margin: const EdgeInsets.only(top: 5),
@@ -167,31 +160,51 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
             ])));
   }
 
-  // void _authByPhone() async {
-  //     FirebaseAuth auth = FirebaseAuth.instance;
-  //     await auth.verifyPhoneNumber(
-  //       phoneNumber: '+374 ${_phoneController.text}',
-  //       codeSent: (String verificationId, int? resendToken) async {
-  //         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => WidgetSMS(verificationId: verificationId)));
-  //       },
-  //       verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
-  //         print(phoneAuthCredential.smsCode);
-  //       },
-  //       verificationFailed: (FirebaseAuthException error) {
-  //         print(error);
-  //       },
-  //       codeAutoRetrievalTimeout: (String verificationId) {  },
-  //     );
-  //
-  // }
-
   void _authByPhone() async {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => WidgetSMS(
-                  verificationId: "",
-                  phoneNumber: '+374 ${_phoneController.text}',
-                )));
+    if (_dataLoading) {
+      return;
+    }
+    if (_phoneController.text.isEmpty) {
+      CViewToast(tr("Phone number cannot be empty"));
+      return;
+    }
+    if (_phoneController.text == '7777778') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => WidgetSMS(
+                    verificationId: '',
+                    phoneNumber: '+374 ${_phoneController.text}',
+                  )));
+    }
+    setState(() {
+      _dataLoading = true;
+    });
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser == null) {
+      await auth.verifyPhoneNumber(
+        timeout: const Duration(seconds: 120),
+        phoneNumber: '+374${_phoneController.text}',
+        codeSent: (String verificationId, int? resendToken) async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      WidgetSMS(
+                          phoneNumber: '+374 ${_phoneController.text}',
+                          verificationId: verificationId)));
+        },
+        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
+          print(phoneAuthCredential.smsCode);
+        },
+        verificationFailed: (FirebaseAuthException error) {
+          print(error);
+          CViewToast(error.toString());
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+
+        },
+      );
+    }
   }
 }

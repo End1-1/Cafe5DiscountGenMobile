@@ -6,7 +6,9 @@ import 'package:cviewdiscount/config.dart';
 import 'package:cviewdiscount/home_page.dart';
 import 'package:cviewdiscount/socket_message.dart';
 import 'package:cviewdiscount/translator.dart';
+import 'package:cviewdiscount/utils/ColorHelper.dart';
 import 'package:cviewdiscount/widget_bonuses.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
@@ -62,11 +64,13 @@ class WidgetMainPageState extends BaseWidgetState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorHelper.background_color,
         body: SafeArea(
             minimum:
                 const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 35),
-            child: Stack(children: [
-              Container(color: Colors.white),
+            child: Stack(
+                children: [
+              Container(color: ColorHelper.background_color,),
               Column(
                   //mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -75,7 +79,7 @@ class WidgetMainPageState extends BaseWidgetState
                     Row(children: [
                       Expanded(child: Container()),
                       Text(Config.getString(key_fullname),
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: ColorHelper.text_color)),
                       Expanded(child: Container()),
                       ClassOutlinedButton.createImage(() {
                         setState(() {
@@ -83,11 +87,18 @@ class WidgetMainPageState extends BaseWidgetState
                           startx = 0;
                           _menuAnimationDuration = 300;
                         });
-                      }, "images/menu.png"),
+                      }, "assets/images/menu.png"),
                     ]),
                     const Divider(
                       height: 20,
                     ),
+                    Align(alignment: Alignment.center, child: Container(width: 100, height: 100, child: InkWell(onTap: () {
+                      sq(tr("Create new discount card?"), () {
+                        SocketMessage m = SocketMessage.dllplugin(
+                            SocketMessage.op_create_qr_discount);
+                        sendSocketMessage(m);
+                      }, () {});
+                    }, child: Image.asset("assets/images/plus.png")))),
                     ClassOutlinedButton.create(() {
                       sq(tr("Create new discount card?"), () {
                         SocketMessage m = SocketMessage.dllplugin(
@@ -187,7 +198,7 @@ class WidgetMainPageState extends BaseWidgetState
                               setState(() {
                                 _hideMenu = true;
                               });
-                            }, "images/cancel.png")
+                            }, "assets/images/cancel.png")
                           ],
                         ),
                         const Divider(
@@ -200,7 +211,7 @@ class WidgetMainPageState extends BaseWidgetState
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        WidgetBonusPage()));
+                                        const WidgetBonusPage()));
                           });
                         }, tr("Bonuses"), w: double.infinity),
                         const Divider(
@@ -217,6 +228,10 @@ class WidgetMainPageState extends BaseWidgetState
                         ClassOutlinedButton.create(() {
                           setState(() {
                             sq(tr("Confirm to logout"), () {
+                              final FirebaseAuth auth = FirebaseAuth.instance;
+                              if (auth.currentUser != null) {
+                                auth.signOut();
+                              }
                               Config.setString(key_session_id, "");
                               Config.setBool(key_data_dont_update, false);
                               Navigator.pushAndRemoveUntil(
