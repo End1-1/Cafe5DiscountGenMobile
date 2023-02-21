@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class WidgetMainPage extends StatefulWidget {
   const WidgetMainPage({super.key});
@@ -298,6 +299,29 @@ class WidgetMainPageState extends BaseWidgetState
                             height: 30,
                             child: GestureDetector(
                                 onTap: _launchInsta,
+                                child: Row(
+                                  children: [
+                                    const VerticalDivider(width: 30),
+                                    SvgPicture.asset("assets/images/tripadvisor.svg", height:30, width: 30,),
+                                    const VerticalDivider(width: 20),
+                                    Text(tr("Tripadvisor").toLowerCase(),
+                                        style: TextStyle(
+                                            color: ColorHelper.title_text_color,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18))
+                                  ],
+                                ))),
+                        const Divider(
+                          height: 20,
+                        ),
+                        SizedBox(
+                            height: 30,
+                            child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _languageMenu = !_languageMenu;
+                                  });
+                                },
                                 child: Row(
                                   children: [
                                     const VerticalDivider(width: 30),
