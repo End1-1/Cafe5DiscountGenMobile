@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:187973232151:android:a45897a66fbde2a7199e52",
+        "mobilesdk_app_id": "1:187973232151:android:d87feef176060685199e52",
         "android_client_info": {
-          "package_name": "com.example.cviewdiscount"
+          "package_name": "com.breezedevs.cviewdiscount"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "187973232151-p1m1cmer33jerolbn6vq5csoj8a8hu1v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.breezedevs.cviewdiscount",
+            "certificate_hash": "359a9bce66cf7e3048f388d9c606d54c251c26b4"
+          }
+        },
         {
           "client_id": "187973232151-mfjtt22brvh7i736sofcg0rb4sfft73h.apps.googleusercontent.com",
           "client_type": 3
@@ -29,6 +37,13 @@
             {
               "client_id": "187973232151-mfjtt22brvh7i736sofcg0rb4sfft73h.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "187973232151-pu2m6hbt5c6267f26nttm4ugioqipjol.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cviewdiscount"
+              }
             }
           ]
         }

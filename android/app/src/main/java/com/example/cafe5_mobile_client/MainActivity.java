@@ -1,4 +1,4 @@
-package com.example.cviewdiscount;
+package com.breezedevs.cviewdiscount;
 
 import io.flutter.embedding.android.FlutterActivity;
 

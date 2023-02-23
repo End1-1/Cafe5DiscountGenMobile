@@ -47,7 +47,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.cviewdiscount"
+        applicationId "com.breezedevs.cviewdiscount"
         minSdkVersion localProperties.getProperty('flutter.minSdkVersion').toInteger()
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
