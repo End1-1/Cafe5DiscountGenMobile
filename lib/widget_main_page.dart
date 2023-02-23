@@ -499,52 +499,6 @@ class WidgetMainPageState extends BaseWidgetState
     await launchUrlString("https://www.tripadvisor.ru/Restaurant_Review-g293932-d24045065-Reviews-C_View-Yerevan.html");
   }
 
-  void _changeLanguage() async {
-    List<Widget> tiles = List.from(<Widget>[]);
-    tiles.add(ListTile(
-      dense: true,
-      title: const Text('Հայերեն'),
-      onTap: (() {
-        Navigator.pop(context);
-        _hideMenu = true;
-        setState(() {
-          Config.setString(key_used_language, 'am');
-        });
-      }),
-    ));
-    tiles.add(ListTile(
-      dense: true,
-      title: const Text('Русский'),
-      onTap: (() {
-        Navigator.pop(context);
-        _hideMenu = true;
-        setState(() {
-          Config.setString(key_used_language, 'ru');
-        });
-      }),
-    ));
-    tiles.add(ListTile(
-      dense: true,
-      title: const Text('English'),
-      onTap: (() {
-        Navigator.pop(context);
-        _hideMenu = true;
-        setState(() {
-          Config.setString(key_used_language, 'en');
-        });
-      }),
-    ));
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return WillPopScope(
-              onWillPop: () async => false,
-              child:
-                  SimpleDialog(backgroundColor: Colors.white, children: tiles));
-        });
-  }
-
   void _createQR() async {
     if (_qr.isEmpty) {
       sd(tr("Empty QR code"));

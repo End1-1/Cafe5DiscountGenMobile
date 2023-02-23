@@ -109,8 +109,10 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Align(alignment: Alignment.topRight, child: SizedBox(width: 36, height: 36,
+                      child: InkWell(onTap: _changeLanguage, child: Image.asset("assets/images/globus.png")))),
               const Divider(
-                height: 40,
+                height: 10,
               ),
               Visibility(
                   visible: _step == 1,
@@ -334,5 +336,48 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
     setState(() {
       _dataLoading = false;
     });
+  }
+
+  void _changeLanguage() async {
+    List<Widget> tiles = List.from(<Widget>[]);
+    tiles.add(ListTile(
+      dense: true,
+      title: const Text('Հայերեն'),
+      onTap: (() {
+        Navigator.pop(context);
+        setState(() {
+          Config.setString(key_used_language, 'am');
+        });
+      }),
+    ));
+    tiles.add(ListTile(
+      dense: true,
+      title: const Text('Русский'),
+      onTap: (() {
+        Navigator.pop(context);
+        setState(() {
+          Config.setString(key_used_language, 'ru');
+        });
+      }),
+    ));
+    tiles.add(ListTile(
+      dense: true,
+      title: const Text('English'),
+      onTap: (() {
+        Navigator.pop(context);
+        setState(() {
+          Config.setString(key_used_language, 'en');
+        });
+      }),
+    ));
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+              onWillPop: () async => false,
+              child:
+              SimpleDialog(backgroundColor: Colors.white, children: tiles));
+        });
   }
 }
