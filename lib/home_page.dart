@@ -33,6 +33,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
   String? _verificationId;
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _smsController = TextEditingController();
+  final FirebaseAuth fbAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -271,8 +272,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
     setState(() {
       _dataLoading = true;
     });
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    await auth.verifyPhoneNumber(
+    await fbAuth.verifyPhoneNumber(
       timeout: const Duration(seconds: 120),
       phoneNumber: '+374 ${_phoneController.text}',
       codeSent: (String verificationId, int? resendToken) async {
@@ -296,7 +296,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
         CViewToast(tr('Timeout, try again'));
       },
       verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
-        auth.signInWithCredential(phoneAuthCredential).then((value) {
+        fbAuth.signInWithCredential(phoneAuthCredential).then((value) {
           _smsController.text = phoneAuthCredential.smsCode!;
           Navigator.pushAndRemoveUntil(
               context,
@@ -313,17 +313,14 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
       CViewToast(tr("Phone number cannot be empty"));
       return;
     }
-    final FirebaseAuth auth = FirebaseAuth.instance;
     setState(() {
       _dataLoading = true;
     });
     try {
       AuthCredential credential = PhoneAuthProvider.credential(
           verificationId: _verificationId!, smsCode: _smsController.text);
-      UserCredential user = await auth.signInWithCredential(credential);
+      UserCredential user = await fbAuth.signInWithCredential(credential);
       Config.setString(key_user_uid, user.user!.uid);
-      await auth.signInWithCredential(credential);
-      print(credential);
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
