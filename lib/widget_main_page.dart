@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'dart:io';
 import 'package:cviewdiscount/base_widget.dart';
 import 'package:cviewdiscount/class_outlinedbutton.dart';
 import 'package:cviewdiscount/config.dart';
@@ -103,14 +103,16 @@ class WidgetMainPageState extends BaseWidgetState
                     ),
                     Align(
                         alignment: Alignment.center,
-                        child: Container(
+                        child: SizedBox(
                             width: 100,
                             height: 100,
                             child: InkWell(
                                 onTap: () {
                                   sq(tr("Create new discount card?"), () {
+                                    final FirebaseAuth auth = FirebaseAuth.instance;
                                     SocketMessage m = SocketMessage.dllplugin(
                                         SocketMessage.op_create_qr_discount);
+                                    m.addString(auth.currentUser?.phoneNumber ?? "UNKNOWN");
                                     sendSocketMessage(m);
                                   }, () {});
                                 },
@@ -279,7 +281,7 @@ class WidgetMainPageState extends BaseWidgetState
                         SizedBox(
                             height: 30,
                             child: GestureDetector(
-                                onTap: _launchInsta,
+                                onTap: _launchMeta,
                                 child: Row(
                                   children: [
                                     const VerticalDivider(width: 30),
@@ -298,11 +300,11 @@ class WidgetMainPageState extends BaseWidgetState
                         SizedBox(
                             height: 30,
                             child: GestureDetector(
-                                onTap: _launchInsta,
+                                onTap: _launchTripadvisor,
                                 child: Row(
                                   children: [
                                     const VerticalDivider(width: 30),
-                                    SvgPicture.asset("assets/images/tripadvisor.svg", height:30, width: 30,),
+                                    Image.asset("assets/images/tripadvisor.png", height:30, width: 30,),
                                     const VerticalDivider(width: 20),
                                     Text(tr("Tripadvisor").toLowerCase(),
                                         style: TextStyle(
@@ -472,6 +474,29 @@ class WidgetMainPageState extends BaseWidgetState
     } else {
       print("can't open Instagram");
     }
+  }
+
+  void _launchMeta() async {
+    String fbProtocolUrl;
+    if (Platform.isIOS) {
+      fbProtocolUrl = 'fb://profile/c.viewyvn';
+    } else {
+      fbProtocolUrl = 'fb://page/c.viewyvn';
+    }
+
+    String fallbackUrl = 'https://www.facebook.com/c.viewyvn/';
+    try {
+      bool launched = await launchUrlString(fbProtocolUrl);
+      if (!launched) {
+        await launchUrlString(fallbackUrl);
+      }
+    } catch (e) {
+      await launchUrlString(fallbackUrl);
+    }
+  }
+
+  void _launchTripadvisor() async {
+    await launchUrlString("https://www.tripadvisor.ru/Restaurant_Review-g293932-d24045065-Reviews-C_View-Yerevan.html");
   }
 
   void _changeLanguage() async {

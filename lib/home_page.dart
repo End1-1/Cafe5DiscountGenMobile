@@ -102,6 +102,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ColorHelper.background_color,
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
             child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
@@ -114,108 +115,131 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
               Visibility(
                   visible: _step == 1,
                   child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Text(
-                        tr("Phone number"),
-                        style: TextStyle(
-                            color: ColorHelper.title_text_color,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      )))),
-                  Visibility(
-                      visible: _step == 2,
-                      child: Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                              margin: const EdgeInsets.only(top: 20, bottom: 20),
-                              child: Text(
-                                tr("Code from SMS"),
-                                style: TextStyle(
-                                    color: ColorHelper.title_text_color,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              )))),
+                      alignment: Alignment.center,
+                      child: Container(
+                          margin: const EdgeInsets.only(top: 20, bottom: 20),
+                          child: Text(
+                            tr("Phone number"),
+                            style: TextStyle(
+                                color: ColorHelper.title_text_color,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          )))),
               Visibility(
-                visible: _step == 2,
-                  child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Text(
-                        '+374 ${_phoneController.text}',
-                        style: TextStyle(
-                            color: ColorHelper.text_color,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      )))),
-              const Divider(
-                height: 40,
-              ),
-              Visibility(
-                visible: _step == 1,
-                  child: Align(
-                  alignment: Alignment.center,
-                  child: CostumNumberTextField(
-                      prefixString: '+374', controller: _phoneController, enabled: !_dataLoading,))),
-              Visibility(
-                visible: _step == 2,
-                  child: Align(
-                  alignment: Alignment.center,
+                  visible: _step == 2,
                   child: Align(
                       alignment: Alignment.center,
                       child: Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
-                        child: CostumNumberTextField(
-                            controller: _smsController,
-                            textAlign: TextAlign.center,
-                            maxLength: 6,
-                            enabled: !_dataLoading),
-                      )))),
+                          margin: const EdgeInsets.only(top: 20, bottom: 20),
+                          child: Text(
+                            tr("Code from SMS"),
+                            style: TextStyle(
+                                color: ColorHelper.title_text_color,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          )))),
+              Visibility(
+                  visible: _step == 2,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                          margin: const EdgeInsets.only(top: 20, bottom: 20),
+                          child: Text(
+                            '+374 ${_phoneController.text}',
+                            style: TextStyle(
+                                color: ColorHelper.text_color,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          )))),
+              const Divider(
+                height: 10,
+              ),
+              Visibility(
+                  visible: _step == 2,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _smsController.text = "";
+                              _step = 1;
+                            });
+                          },
+                          child: Text(tr("Change number"),
+                              style:
+                                  TextStyle(color: ColorHelper.text_color))))),
               const Divider(
                 height: 40,
               ),
               Visibility(
-                visible: _step == 1,
+                  visible: _step == 1,
                   child: Align(
-                  child: CostumButton(
-                width: MediaQuery.of(context).size.width -
-                    (MediaQuery.of(context).size.width / 4),
-                onPressed: _authByPhone,
-                child: Text(
-                  tr("Next"),
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w100,
-                      fontSize: 24),
-                ),
-              ))),
-              Visibility(
-                visible: _step == 2,
-                  child: Align(
-                      child: CostumButton(
-                        width: MediaQuery.of(context).size.width -
-                            (MediaQuery.of(context).size.width / 4),
-                        onPressed: _verifySMS,
-                        child: Text(
-                          tr("Confirm"),
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w100,
-                              fontSize: 24),
-                        ),
+                      alignment: Alignment.center,
+                      child: CostumNumberTextField(
+                        prefixString: '+374',
+                        controller: _phoneController,
+                        enabled: !_dataLoading,
                       ))),
               Visibility(
                   visible: _step == 2,
-                  child: Container(margin: const EdgeInsets.only(top: 15), child: Align(
-                    alignment: Alignment.center,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            child: CostumNumberTextField(
+                                controller: _smsController,
+                                textAlign: TextAlign.center,
+                                maxLength: 6,
+                                enabled: !_dataLoading,
+                                hint: tr("code")),
+                          )))),
+              const Divider(
+                height: 40,
+              ),
+              Visibility(
+                  visible: _step == 1,
+                  child: Align(
+                      child: CostumButton(
+                    width: MediaQuery.of(context).size.width -
+                        (MediaQuery.of(context).size.width / 4),
+                    onPressed: _authByPhone,
                     child: Text(
-                      tr("If no SMS received, please, entered check phone number"),
-                      style: TextStyle(color: ColorHelper.text_color),
-                      textAlign: TextAlign.center,
+                      tr("Next"),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w100,
+                          fontSize: 24),
                     ),
                   ))),
+              Visibility(
+                  visible: _step == 2,
+                  child: Align(
+                      child: CostumButton(
+                    width: MediaQuery.of(context).size.width -
+                        (MediaQuery.of(context).size.width / 4),
+                    onPressed: _verifySMS,
+                    child: Text(
+                      tr("Confirm"),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w100,
+                          fontSize: 24),
+                    ),
+                  ))),
+              Visibility(
+                  visible: _step == 2,
+                  child: Container(
+                      margin: const EdgeInsets.only(top: 15),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          tr("If no SMS received, please, entered check phone number"),
+                          style: TextStyle(color: ColorHelper.text_color),
+                          textAlign: TextAlign.center,
+                        ),
+                      ))),
               Align(
                   child: Container(
                       margin: const EdgeInsets.only(top: 5),
@@ -242,55 +266,44 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
       CViewToast(tr("Phone number cannot be empty"));
       return;
     }
-    if (_phoneController.text == '7777778') {
-      setState(() {
-        _dataLoading = false;
-        _step = 2;
-      });
-      return;
-    }
     setState(() {
       _dataLoading = true;
     });
     final FirebaseAuth auth = FirebaseAuth.instance;
-    if (auth.currentUser != null) {
-      auth.currentUser!.delete();
-    }
-      await auth.verifyPhoneNumber(
-        timeout: const Duration(seconds: 120),
-        phoneNumber: '+374${_phoneController.text}',
-        codeSent: (String verificationId, int? resendToken) async {
-          _step = 2;
-          _verificationId = verificationId;
-          setState(() {
-            _dataLoading = false;
-          });
-
-        },
-        verificationFailed: (FirebaseAuthException error) {
-          print(error);
-          setState(() {
-            _dataLoading = false;
-          });
-          CViewToast(error.toString());
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          setState(() {
-            _dataLoading = false;
-          });
-          CViewToast(tr('Timeout, try again'));
-        },
-        verificationCompleted: (PhoneAuthCredential phoneAuthCredential)  {
-           auth.signInWithCredential(phoneAuthCredential).then((value) {
-             _smsController.text = phoneAuthCredential.smsCode!;
-             Navigator.pushAndRemoveUntil(
-                 context,
-                 MaterialPageRoute(
-                     builder: (BuildContext context) => const WidgetMainPage()),
-                     (route) => false);
-           });
-        },
-      );
+    await auth.verifyPhoneNumber(
+      timeout: const Duration(seconds: 120),
+      phoneNumber: '+374 ${_phoneController.text}',
+      codeSent: (String verificationId, int? resendToken) async {
+        _step = 2;
+        _verificationId = verificationId;
+        setState(() {
+          _dataLoading = false;
+        });
+      },
+      verificationFailed: (FirebaseAuthException error) {
+        print(error);
+        setState(() {
+          _dataLoading = false;
+        });
+        CViewToast(error.toString());
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        setState(() {
+          _dataLoading = false;
+        });
+        CViewToast(tr('Timeout, try again'));
+      },
+      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
+        auth.signInWithCredential(phoneAuthCredential).then((value) {
+          _smsController.text = phoneAuthCredential.smsCode!;
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const WidgetMainPage()),
+              (route) => false);
+        });
+      },
+    );
   }
 
   void _verifySMS() async {
@@ -298,14 +311,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
       CViewToast(tr("Phone number cannot be empty"));
       return;
     }
-    if (_smsController.text == '123459') {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const WidgetMainPage()),
-              (route) => false);
-    }
-    FirebaseAuth auth = FirebaseAuth.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
     setState(() {
       _dataLoading = true;
     });
@@ -320,7 +326,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => const WidgetMainPage()),
-              (route) => false);
+          (route) => false);
     } catch (e) {
       print(e);
       CViewToast(tr("Wrong credential entered"));

@@ -8,8 +8,9 @@ class CostumNumberTextField extends StatelessWidget {
   final TextAlign textAlign;
   final int maxLength;
   final bool enabled;
+  final String hint;
 
-  const CostumNumberTextField({super.key, required this.controller, this.prefixString = "", this.textAlign = TextAlign.left, this.maxLength = 8, this.enabled = true});
+  const CostumNumberTextField({super.key, required this.controller, this.prefixString = "", this.textAlign = TextAlign.left, this.maxLength = 8, this.enabled = true, this.hint = ""});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,8 @@ class CostumNumberTextField extends StatelessWidget {
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
               isDense: true,
+              hintText: hint,
+              hintStyle: const TextStyle(color: Colors.white12),
               prefixIcon: prefixString.isEmpty ? null : Padding(padding: const EdgeInsets.all(10), child: Text(prefixString,
                   style: TextStyle(
                       color: ColorHelper.formfield_text_color, fontSize: 24))),

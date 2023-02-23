@@ -38,6 +38,7 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>instagram</string>
+		<string>fb</string>
 		<string>https</string>
 		<string>http</string>
 	</array>

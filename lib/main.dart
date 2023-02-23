@@ -13,6 +13,7 @@ import 'client_socket.dart';
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Config.init();
+  Config.setInt(key_protocol_version, 1);
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
 }

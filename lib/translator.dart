@@ -9,7 +9,6 @@ final Map<String, Map<String, String>> vals = {
     'russian': 'Русский',
     'sign in': 'Մուտք',
     'login': 'Մուտք',
-    'update date': 'Թարմացնել տվյալները',
     'logout': 'Ելք',
     'unknown': 'Անհայտ',
     'confirm to logout': 'Հաստատեք ելքը',
@@ -25,8 +24,38 @@ final Map<String, Map<String, String>> vals = {
     'code from sms': 'SMS-ով ուղարկած կոդը',
     'no connection to server.\ncheck internet connection.': 'Հնարավոր չէ կապ հաստատել սերվերի հետ։\nՍտուգեք ինտերնետի առկայությունը։',
     'phone number cannot be empty': 'Հեռախոսի համարը նշված չէ',
-    'if no SMS received, please, entered check phone number': 'Եթե SMS չի եկել, ստուգեք մուտքագրված հեռախոսահամարը',
-    'wrong credential entered': 'Մուտքագրված տվյալները սխալ են'
+    'if no sms received, please, entered check phone number': 'Եթե SMS չի եկել, ստուգեք մուտքագրված հեռախոսահամարը',
+    'wrong credential entered': 'Մուտքագրված տվյալները սխալ են',
+    'code': 'կոդ',
+    'change number': 'փոխել հեռախոսահամարը'
+  },
+  'ru': {
+    'yes': 'Да',
+    'no': 'Нет',
+    'armenian': 'Հայերեն',
+    'english': 'English',
+    'russian': 'Русский',
+    'sign in': 'Вход',
+    'login': 'Вход',
+    'logout': 'Выход',
+    'unknown': 'Неизвестно',
+    'confirm to logout': 'Подтвердите выход',
+    'cancel': 'Отмена',
+    'generate': 'Создать новый код',
+    'create new discount card?': 'Подтвердите создание нового кода',
+    'send link': 'Поделиться',
+    'bonuses': 'Бонусы',
+    'empty qr code': 'Пустой код',
+    'next': 'Вперёд',
+    'confirm': 'Подтвердить',
+    'phone number': 'Телефонный номер',
+    'code from sms': 'Введите код из SMS',
+    'no connection to server.\ncheck internet connection.': 'Невозможно подключиться к серверу, проверте интернет.',
+    'phone number cannot be empty': 'Введите номер телефона',
+    'if no sms received, please, entered check phone number': 'Если не получили СМС, проверте введённый номер и интерет.',
+    'wrong credential entered': 'Введены неверные данные',
+    'code': 'код',
+    'change number': 'изменить телефонный номер'
   }
 };
 
