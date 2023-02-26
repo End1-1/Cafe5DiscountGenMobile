@@ -20,7 +20,7 @@ final Map<String, Map<String, String>> vals = {
     'empty qr code': 'Դատարկ կոդ',
     'next': 'Առաջ',
     'confirm': 'Հաստատել',
-    'phone number': 'Հեռախոսի հարարը',
+    'phone number': 'Հեռախոսի համարը',
     'code from sms': 'SMS-ով ուղարկած կոդը',
     'no connection to server.\ncheck internet connection.': 'Հնարավոր չէ կապ հաստատել սերվերի հետ։\nՍտուգեք ինտերնետի առկայությունը։',
     'phone number cannot be empty': 'Հեռախոսի համարը նշված չէ',
