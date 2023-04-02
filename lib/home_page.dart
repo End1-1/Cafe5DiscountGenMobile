@@ -321,6 +321,7 @@ class WidgetHomeState extends BaseWidgetState with TickerProviderStateMixin {
           verificationId: _verificationId!, smsCode: _smsController.text);
       UserCredential user = await fbAuth.signInWithCredential(credential);
       Config.setString(key_user_uid, user.user!.uid);
+      Config.setString(key_user_phone, _phoneController.text);
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(

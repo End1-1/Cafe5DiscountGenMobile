@@ -14,6 +14,7 @@ const key_protocol_version = "key_protocol_vesion";
 const key_firebase_token = "key_firebase_token";
 const key_used_language = "app_language";
 const key_user_uid = "user_uid";
+const key_user_phone = "user_phone";
 
 final RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
 String num(double x) {

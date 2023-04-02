@@ -51,6 +51,7 @@ class WidgetBonusPageState extends BaseWidgetState with TickerProviderStateMixin
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       SocketMessage m = SocketMessage.dllplugin(SocketMessage.op_check_bonus);
+      m.addString(Config.getString(key_user_phone));
       sendSocketMessage(m);
     });
   }
