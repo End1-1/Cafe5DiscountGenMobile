@@ -27,7 +27,8 @@ final Map<String, Map<String, String>> vals = {
     'if no sms received, please, entered check phone number': 'Եթե SMS չի եկել, ստուգեք մուտքագրված հեռախոսահամարը',
     'wrong credential entered': 'Մուտքագրված տվյալները սխալ են',
     'code': 'կոդ',
-    'change number': 'փոխել հեռախոսահամարը'
+    'change number': 'փոխել հեռախոսահամարը',
+    'language':'Լեզու'
   },
   'ru': {
     'yes': 'Да',
@@ -55,7 +56,8 @@ final Map<String, Map<String, String>> vals = {
     'if no sms received, please, entered check phone number': 'Если не получили СМС, проверте введённый номер и интерет.',
     'wrong credential entered': 'Введены неверные данные',
     'code': 'код',
-    'change number': 'изменить телефонный номер'
+    'change number': 'изменить телефонный номер',
+    'language':'Язык'
   }
 };
 

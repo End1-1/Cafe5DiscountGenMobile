@@ -329,7 +329,7 @@ class WidgetMainPageState extends BaseWidgetState
                                     const VerticalDivider(width: 30),
                                     Image.asset("assets/images/globus.png"),
                                     const VerticalDivider(width: 20),
-                                    Text(tr("Armenian").toLowerCase(),
+                                    Text(tr("Language").toLowerCase(),
                                         style: TextStyle(
                                             color: ColorHelper.title_text_color,
                                             fontWeight: FontWeight.w500,
